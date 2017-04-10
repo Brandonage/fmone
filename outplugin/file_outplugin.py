@@ -7,11 +7,12 @@ class FileOutPlugin(OutPlugin):
         self.filepath = filepath
 
     def push(self,refineddata):
-        with open(self.filepath,"a") as file:
-            line = self.build_line(refineddata)
-            file.write(line)
+        if refineddata is not None: ## only push data if we have some
+            with open(self.filepath,"a") as file:
+                line = self.build_lines(refineddata)
+                file.write(line)
 
-    def build_line(self,refineddata):
+    def build_lines(self,refineddata):
         line = ""
         for value in refineddata:
             line += value.__dict__.__str__() + "\n"
