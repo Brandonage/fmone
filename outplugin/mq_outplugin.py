@@ -1,5 +1,6 @@
 from outplugin import OutPlugin
 import pika
+import json
 
 
 class MQOutPlugin(OutPlugin):
@@ -22,7 +23,7 @@ class MQOutPlugin(OutPlugin):
             for fvalue in refineddata:
                 self.channel.basic_publish(exchange= self.mq_machine + '_exchange',
                                            routing_key=self.routing_key,
-                                           body=fvalue.__dict__.__str__())
+                                           body=json.dumps(fvalue.__dict__))
                 print "Publishing the following values to machine {0} with routing key {1}"\
                     .format(self.mq_machine,self.routing_key)
                 print fvalue.__dict__.__str__()

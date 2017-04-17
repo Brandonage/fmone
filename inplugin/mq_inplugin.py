@@ -1,9 +1,15 @@
 from inplugin import InPlugin
 import time
 import pika
+import json
+from common.funits import Fvalue
 
 
 class MQInPlugin(InPlugin):
+    """
+    It inherits from InPlugin and it overrides the run method to start the start_consuming procedure
+    instead of implementing the while True loop of other plugins
+    """
     def __init__(self, coll_period, mq_machine, routing_key):
         """
         A RabbitMQ in plugin that is going to consume messages from a queue t
@@ -22,7 +28,8 @@ class MQInPlugin(InPlugin):
         """
 
         def callback(ch, method, properties, body):
-            self.buffer.append(body)
+            json_body = json.loads(body)
+            self.buffer.append(Fvalue.fromdict(json_body))
 
         connection = pika.BlockingConnection(pika.ConnectionParameters(host=self.mq_machine))
         channel = connection.channel()

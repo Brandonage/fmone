@@ -14,11 +14,21 @@ class Fvalue():
         :param finfo: information about the metric
         """
         self.fmetric = fmetric
-        self.finf = finfo
+        self.finfo = finfo
         self.fhost = fhost
         self.fvalue = fvalue
         self.funit = funit
         self.ftime = ftime
+
+    @classmethod
+    def fromdict(cls,datadict):
+        "Create a Fvalue from a dict value. Useful when reading serialised jsons"
+        return cls(fmetric=datadict.get('fmetric'),
+                   fhost=datadict.get('fhost'),
+                   fvalue=datadict.get('fvalue'),
+                   ftime=datadict.get('ftime'),
+                   funit=datadict.get('funit'),
+                   finfo=datadict.get('finfo'))
 
 
 class Fvector():

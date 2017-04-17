@@ -59,13 +59,13 @@ def parse_fmone_args():
     parser.add_argument('outplugin',help='The type of out plugin we want to use',choices=outplugins)
     parser.add_argument('--outfilepath',help='If using the file out plugin, which file to write to',
                         dest='outfilepath',default= home+ "/fmone.txt")
-    parser.add_argument('--mq_machine_in',help='The IP of the rabbitMQ broker to use by the MQinplugin',
+    parser.add_argument('--mq_machine_in',help='If using the rabbitMQ in plugin, the IP of the rabbitMQ broker to communicate with',
                         dest='mq_machine_in')
-    parser.add_argument('--routing_key_in',help='The routing key we want to subscribe to',
+    parser.add_argument('--routing_key_in',help='If using the rabbitMQ in plugin, the routing key we want to subscribe to',
                         dest='routing_key_in')
-    parser.add_argument('--mq_machine_out',help='The IP of the rabbitMQ broker to use by the MQoutplugin',
+    parser.add_argument('--mq_machine_out',help='If using the rabbitMQ out plugin, the IP of the rabbitMQ broker to communicate with',
                         dest='mq_machine_out')
-    parser.add_argument('--routing_key_out',help='The IP of the FMonAgent to which we want to send the messages',
+    parser.add_argument('--routing_key_out',help='If using the rabbitMQ out plugin, the IP of the FMonAgent to which we want to send the messages',
                         dest='routing_key_out')
     res = parser.parse_args()
     return res

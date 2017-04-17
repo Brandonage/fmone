@@ -19,10 +19,7 @@ class CpuInPlugin(InPlugin):
                            finfo="cpu")
             self.buffer.append(value)
 
-    def pop(self):
-        res = self.buffer
-        self.buffer = []
-        return res
+
 
 
 
