@@ -8,23 +8,28 @@ class MQOutPlugin(OutPlugin):
         """
         A RabbitMQ out plugin that pushes messages to an exchange with name 'mq_machine' + '_exchange'
         and routing key routing_key so it will be delivered to the right consumer
-        :param mq_machine: this is the ip of the machine where the RabbitMQ service resides
+        :param mq_machine: this is the ip and port of the mq service we will use. It has the format IP:PORT
         :param routing_key: this is the machine that will consume the data
         """
         OutPlugin.__init__(self)
-        self.mq_machine = mq_machine
+        host_and_port = mq_machine.split(":")
+        self.mq_host = host_and_port[0]
+        if len(host_and_port) > 1:
+            self.mq_port = int(host_and_port[1])
+        else:
+            self.mq_port = None
         self.routing_key = routing_key
-        connection = pika.BlockingConnection(pika.ConnectionParameters(host=self.mq_machine))
+        connection = pika.BlockingConnection(pika.ConnectionParameters(host=self.mq_host,port=self.mq_port))
         self.channel = connection.channel()
-        self.channel.exchange_declare(exchange= self.mq_machine + '_exchange',type = 'direct')
+        self.channel.exchange_declare(exchange= self.mq_host + '_exchange',type = 'direct')
 
     def push(self,refineddata):
-        if refineddata is not None: # only push data if we have some
+        if refineddata: # only push data if we have some
             for fvalue in refineddata:
-                self.channel.basic_publish(exchange= self.mq_machine + '_exchange',
+                self.channel.basic_publish(exchange= self.mq_host + '_exchange',
                                            routing_key=self.routing_key,
                                            body=json.dumps(fvalue.__dict__))
                 print "Publishing the following values to machine {0} with routing key {1}"\
-                    .format(self.mq_machine,self.routing_key)
+                    .format(self.mq_host,self.routing_key)
                 print fvalue.__dict__.__str__()
 

@@ -22,7 +22,10 @@ class Fvalue():
 
     @classmethod
     def fromdict(cls,datadict):
-        "Create a Fvalue from a dict value. Useful when reading serialised jsons"
+        """Create a Fvalue from a dict value. Useful when reading serialised jsons
+           It is a class method so it's able to return itself
+           :param datadict: a dict holding the values of the fvalue
+        """
         return cls(fmetric=datadict.get('fmetric'),
                    fhost=datadict.get('fhost'),
                    fvalue=datadict.get('fvalue'),

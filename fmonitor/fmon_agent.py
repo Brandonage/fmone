@@ -43,11 +43,15 @@ class FMonAgent():
 
 
 def parse_fmone_args():
+    """
+
+    :return: A dict containing all the parameters parsed in the form of res.mongo_machine_out
+    """
     home = os.environ['HOME']
     # These are the available options for the monitoring agent. Useful to print errors when using the script
     inplugins = ["cpu","rabbitmq"]
-    midplugins = ["inout"]
-    outplugins = ["file","rabbitmq"]
+    midplugins = ["inout","average"]
+    outplugins = ["file","rabbitmq","console","mongodb"]
     # We start to parse arguments
     parser = argparse.ArgumentParser(description="A monitoring util that can be customised with plugins")
     parser.add_argument('coll_period',help='Collect metrics every x_coll seconds',type=int,metavar='X_col',
@@ -59,14 +63,18 @@ def parse_fmone_args():
     parser.add_argument('outplugin',help='The type of out plugin we want to use',choices=outplugins)
     parser.add_argument('--outfilepath',help='If using the file out plugin, which file to write to',
                         dest='outfilepath',default= home+ "/fmone.txt")
-    parser.add_argument('--mq_machine_in',help='If using the rabbitMQ in plugin, the IP of the rabbitMQ broker to communicate with',
+    parser.add_argument('--mq_machine_in',help='If using the rabbitMQ in plugin, the IP:Port of the rabbitMQ broker to communicate with',
                         dest='mq_machine_in')
     parser.add_argument('--routing_key_in',help='If using the rabbitMQ in plugin, the routing key we want to subscribe to',
                         dest='routing_key_in')
-    parser.add_argument('--mq_machine_out',help='If using the rabbitMQ out plugin, the IP of the rabbitMQ broker to communicate with',
+    parser.add_argument('--mq_machine_out',help='If using the rabbitMQ out plugin, the IP:Port of the rabbitMQ broker to communicate with',
                         dest='mq_machine_out')
-    parser.add_argument('--routing_key_out',help='If using the rabbitMQ out plugin, the IP of the FMonAgent to which we want to send the messages',
+    parser.add_argument('--routing_key_out',help='If using the rabbitMQ out plugin, the IP or name of the FMonAgent to which we want to send the messages',
                         dest='routing_key_out')
+    parser.add_argument('--mongo_machine_out',help='If using the MongoDB out plugin, the IP or name of the FMonAgent to which we want to send the messages',
+                        dest='mongo_machine_out')
+    parser.add_argument('--mongo_collection_out',help='If using the MongoDB out plugin, the IP or name of the FMonAgent to which we want to send the messages',
+                        dest='mongo_collection_out')
     res = parser.parse_args()
     return res
 
@@ -84,7 +92,10 @@ if __name__ == '__main__':
                           mq_machine_in=args.mq_machine_in,
                           routing_key_in=args.routing_key_in,
                           mq_machine_out=args.mq_machine_out,
-                          routing_key_out=args.routing_key_out)
+                          routing_key_out=args.routing_key_out,
+                          mongo_machine_out=args.mongo_machine_out,
+                          mongo_collection_out=args.mongo_collection_out
+                          )
     fmonagent.run()
 
 
