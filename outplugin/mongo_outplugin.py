@@ -1,6 +1,5 @@
 from outplugin import OutPlugin
 from pymongo import MongoClient
-import json
 
 class MongoOutPlugin(OutPlugin):
     def __init__(self,mongo_ip,collection_name):

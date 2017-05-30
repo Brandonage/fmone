@@ -23,7 +23,7 @@ class FMonAgent():
         """
         try:
             self.inplugin = inplugin_factory.getinplugin(plugin_type=inplugin,coll_period=coll_period,**args)
-            self.midplugin = midplugin_factory.getmidplugin(plugin_type=midplugin,)
+            self.midplugin = midplugin_factory.getmidplugin(plugin_type=midplugin)
             self.outplugin = outplugin_factory.getoutplugin(plugin_type=outplugin,**args)
             self.push_period = push_period
 
@@ -49,7 +49,7 @@ def parse_fmone_args():
     """
     home = os.environ['HOME']
     # These are the available options for the monitoring agent. Useful to print errors when using the script
-    inplugins = ["cpu","rabbitmq"]
+    inplugins = ["cpu","rabbitmq","host"]
     midplugins = ["inout","average"]
     outplugins = ["file","rabbitmq","console","mongodb"]
     # We start to parse arguments

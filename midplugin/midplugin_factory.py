@@ -5,6 +5,8 @@ from common.funits import Fvalue
 
 # We can keep here for the moment the different functions that will be passed to the LambdaMidPlugin
 # Possibly, this is meant to be transferred to a different module
+# The function has to implement a procedure that receives a list of fvalues with the same fmetric and returns a single
+# Fvalue that summarises them
 def average_fvalues(list_of_fvalues):
     fhost = "Summary of several hosts"
     finfo = list_of_fvalues[0].finfo
