@@ -1,13 +1,16 @@
 from inplugin import InPlugin
 from subprocess import check_output
-from common import docker_metrics
+from common import docker_metrics_refiner
 
 class DockerInPlugin(InPlugin):
     def __init__(self, coll_period):
+        """
+        A plugin that connects to the Docker socket and retrieves stats about the running containers. Because
+        connecting each time to the socket it's expensive we will start one thread for each of the containers 
+        :param coll_period: 
+        """
         InPlugin.__init__(self, coll_period)
 
     def collect(self):
-        output = check_output("docker ps --no-trunc | awk '{print $1 \"|\" $2}' | grep -v CONTAINER",shell=True)
-        ps_and_name_tuples = map(lambda x: x.split("|"), output.split("\n")[:-1])
-        for ps_name_tuple in ps_and_name_tuples:
-            cputimes = docker_metrics.docker_stats() # give me the cpu stats for this ps number
+        # give me a json with a set of stats for all the docker containers in this host
+        stats = docker_metrics_refiner.docker_stats()
