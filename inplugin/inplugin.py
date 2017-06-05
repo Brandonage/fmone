@@ -24,6 +24,6 @@ class InPlugin(Thread):
         pass
 
     def pop(self):
-        res = self.buffer
-        self.buffer = []
+        res = self.buffer[:] # we copy by slicing
+        self.buffer[:] = [] # we empty the list by slicing since we don't want to create a new reference
         return res

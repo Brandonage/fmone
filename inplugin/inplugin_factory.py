@@ -3,6 +3,7 @@
 from cpu_inplugin import CpuInPlugin
 from mq_inplugin import MQInPlugin
 from host_inplugin import HostMetricsInPlugin
+from docker_inplugin import DockerInPlugin
 
 def getinplugin(plugin_type, coll_period, **args):
     if plugin_type=="cpu":
@@ -15,3 +16,5 @@ def getinplugin(plugin_type, coll_period, **args):
         return MQInPlugin(coll_period,mq_machine,routing_key)
     if plugin_type=="host":
         return HostMetricsInPlugin(coll_period)
+    if plugin_type=="docker":
+        return DockerInPlugin(coll_period)

@@ -49,7 +49,7 @@ def parse_fmone_args():
     """
     home = os.environ['HOME']
     # These are the available options for the monitoring agent. Useful to print errors when using the script
-    inplugins = ["cpu","rabbitmq","host"]
+    inplugins = ["cpu","rabbitmq","host","docker"]
     midplugins = ["inout","average"]
     outplugins = ["file","rabbitmq","console","mongodb"]
     # We start to parse arguments

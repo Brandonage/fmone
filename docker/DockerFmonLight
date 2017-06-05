@@ -13,6 +13,7 @@ RUN apk add --no-cache --virtual .build-deps \
 && pip install --no-cache-dir psutil \
 && pip install --no-cache-dir pika \
 && pip install --no-cache-dir pymongo \
+&& pip install --no-cache-dir docker \
 && apk del .build-deps
 
 WORKDIR /fmone
