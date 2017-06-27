@@ -105,7 +105,7 @@ def refine_docker_stats(dict, prev_dict): # TODO: CHANGE THE UNITS OF MEASUREMEN
 
 
 if __name__ == '__main__':
-    client = docker.DockerClient(base_url='unix://var/run/docker.sock')
+    client = docker.DockerClient(base_url='unix:///var/run/docker.sock')
     c= client.containers.list()[0] ## OJO. LA LISTA PUEDE ESTAR VACIA
     stream = c.stats(decode=True)
     prev_chunk = None # We start with an empty previous chunk

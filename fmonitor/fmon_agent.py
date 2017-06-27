@@ -39,7 +39,8 @@ class FMonAgent():
             self.outplugin.push(refineddata=refinedvalues) # push them out to the next fmon or backend
             time2 = time.time()
             timediff = time2-time1
-            time.sleep(self.push_period - timediff)
+            if timediff < self.push_period: # We don't want the agent to end with an error when push_period - timediff is a negative value
+                time.sleep(self.push_period - timediff)
 
 
 def parse_fmone_args():

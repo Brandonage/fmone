@@ -2,8 +2,7 @@ from inplugin import InPlugin
 from common import docker_metrics_refiner
 import docker
 from time import sleep, time
-from threading import Thread, Event
-from datetime import datetime
+from threading import Thread
 from common.funits import Fvalue
 import socket
 
@@ -77,7 +76,7 @@ class DockerInPlugin(InPlugin):
         we are going to manage a set of worker threads inside this thread that will listen for the docker socket
         to send them stats 
         """
-        client = docker.DockerClient(base_url='tcp://localhost:2376')
+        client = docker.DockerClient(base_url='unix:///var/run/docker.sock')
         containers_registered = {}
         while True:
             containers = client.containers.list()
