@@ -4,6 +4,7 @@ from cpu_inplugin import CpuInPlugin
 from mq_inplugin import MQInPlugin
 from host_inplugin import HostMetricsInPlugin
 from docker_inplugin import DockerInPlugin
+from kafka_inplugin import KafkaInPlugin
 
 def getinplugin(plugin_type, coll_period, **args):
     if plugin_type=="cpu":
@@ -18,3 +19,9 @@ def getinplugin(plugin_type, coll_period, **args):
         return HostMetricsInPlugin(coll_period)
     if plugin_type=="docker":
         return DockerInPlugin(coll_period)
+    if plugin_type=="kafka": # it needs parameters mq_machine and routing_key
+        bootstrap_server = args.get("kafka_bootstrap_in")
+        topic = args.get("kafka_topic_in")
+        if (not isinstance(bootstrap_server,str) or not isinstance(topic,str)):
+            raise ValueError("Wrong parameters supplied for the Kafka In Plugin: <kafka_bootstrap, topic>")
+        return KafkaInPlugin(coll_period,bootstrap_server,topic)

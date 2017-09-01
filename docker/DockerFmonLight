@@ -2,6 +2,9 @@
 FROM python:2-alpine
 # When building remember to set the context as ../../
 # docker build -f DockerFmonLight -t fmone-agent:latest ../../
+# docker login
+# docker tag fmone-agent alvarobrandon/fmone-agent
+# docker push alvarobrandon/fmone-agent
 ADD fmone /fmone
 
 RUN apk add --no-cache --virtual .build-deps \
@@ -14,6 +17,7 @@ RUN apk add --no-cache --virtual .build-deps \
 && pip install --no-cache-dir pika \
 && pip install --no-cache-dir pymongo \
 && pip install --no-cache-dir docker \
+&& pip install --no-cache-dir kafka-python \
 && apk del .build-deps
 
 WORKDIR /fmone

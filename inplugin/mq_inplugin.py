@@ -1,5 +1,4 @@
 from inplugin import InPlugin
-import time
 import pika
 import json
 from common.funits import Fvalue

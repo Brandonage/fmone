@@ -50,9 +50,9 @@ def parse_fmone_args():
     """
     home = os.environ['HOME']
     # These are the available options for the monitoring agent. Useful to print errors when using the script
-    inplugins = ["cpu","rabbitmq","host","docker"]
+    inplugins = ["cpu","rabbitmq","host","docker","kafka"]
     midplugins = ["inout","average"]
-    outplugins = ["file","rabbitmq","console","mongodb"]
+    outplugins = ["file","rabbitmq","console","mongodb","kafka"]
     # We start to parse arguments
     parser = argparse.ArgumentParser(description="A monitoring util that can be customised with plugins")
     parser.add_argument('coll_period',help='Collect metrics every x_coll seconds',type=int,metavar='X_col',
@@ -76,6 +76,14 @@ def parse_fmone_args():
                         dest='mongo_machine_out')
     parser.add_argument('--mongo_collection_out',help='If using the MongoDB out plugin, the IP or name of the FMonAgent to which we want to send the messages',
                         dest='mongo_collection_out')
+    parser.add_argument('--kafka_bootstrap_out',help='If using the Kafka out plugin, the IP:port of one Kafka Broker',
+                        dest='kafka_bootstrap_out')
+    parser.add_argument('--kafka_topic_out',help='If using the Kafka out plugin, the topic to which we want to publish our messages',
+                        dest='kafka_topic_out')
+    parser.add_argument('--kafka_bootstrap_in',help='If using the Kafka in plugin, the IP:port of one Kafka Broker',
+                        dest='kafka_bootstrap_in')
+    parser.add_argument('--kafka_topic_in',help='If using the Kafka in plugin, the topic from which we want to consume our messages',
+                        dest='kafka_topic_in')
     res = parser.parse_args()
     return res
 
@@ -95,7 +103,11 @@ if __name__ == '__main__':
                           mq_machine_out=args.mq_machine_out,
                           routing_key_out=args.routing_key_out,
                           mongo_machine_out=args.mongo_machine_out,
-                          mongo_collection_out=args.mongo_collection_out
+                          mongo_collection_out=args.mongo_collection_out,
+                          kafka_bootstrap_out=args.kafka_bootstrap_out,
+                          kafka_topic_out=args.kafka_topic_out,
+                          kafka_bootstrap_in=args.kafka_bootstrap_in,
+                          kafka_topic_in=args.kafka_topic_in
                           )
     fmonagent.run()
 
