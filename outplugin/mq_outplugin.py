@@ -1,6 +1,7 @@
 from outplugin import OutPlugin
 import pika
 import json
+from time import sleep
 
 
 class MQOutPlugin(OutPlugin):
@@ -19,9 +20,10 @@ class MQOutPlugin(OutPlugin):
         else:
             self.mq_port = None
         self.routing_key = routing_key
+        sleep(5) # We introduce a slight delay to let the RabbitMQ container to accept connections
         connection = pika.BlockingConnection(pika.ConnectionParameters(host=self.mq_host,port=self.mq_port))
         self.channel = connection.channel()
-        self.channel.exchange_declare(exchange= self.mq_host + '_exchange',type = 'direct')
+        self.channel.exchange_declare(exchange= self.mq_host + '_exchange',exchange_type='direct')
 
     def push(self,refineddata):
         if refineddata: # only push data if we have some

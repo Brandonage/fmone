@@ -1,6 +1,7 @@
 from inplugin import InPlugin
 import pika
 import json
+from time import sleep
 from common.funits import Fvalue
 
 
@@ -35,9 +36,10 @@ class MQInPlugin(InPlugin):
             json_body = json.loads(body)
             self.buffer.append(Fvalue.fromdict(json_body))
 
+        sleep(5) # We introduce a slight delay to let the RabbitMQ container to accept connections
         connection = pika.BlockingConnection(pika.ConnectionParameters(host=self.mq_host,port=self.mq_port))
         channel = connection.channel()
-        channel.exchange_declare(exchange=self.mq_host + '_exchange', type='direct')
+        channel.exchange_declare(exchange=self.mq_host + '_exchange', exchange_type='direct')
         result = channel.queue_declare(exclusive=True)
         queue_name = result.method.queue
         channel.queue_bind(exchange=self.mq_host + '_exchange',
